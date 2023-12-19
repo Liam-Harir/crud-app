@@ -1,3 +1,4 @@
+// localStorage.clear()
 import React, { useState} from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -6,28 +7,37 @@ import AddStudent from './Components/AddStudent';
 import { useEffect } from 'react';
 import _ from 'lodash';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faWarning,faSearch,faMagicWandSparkles } from '@fortawesome/free-solid-svg-icons';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import Student from './Components/Student';
+import id from 'id';
 
 function App() {
   const [allStudents, setAllStudents] = useState(null);
   const [searchResults, setSearchResults] = useState(null);
   const [keywords, setKeywords] = useState('');
-  const[firstName, setFirstName] = useState('');
-  const[lastName, setLastName] = useState('');
-  const[email, setEmail] = useState('');
-  const[selectedFile, setSelectedFile] = useState();
-  const[gradYear, setGradYear] = useState();
+  const [Elixer, setElixer] = useState('');
 
+  useEffect(() => {
+    if(localStorage){
+      const studentLocalStorage = JSON.parse(localStorage.getItem('students'));
+
+      if(studentLocalStorage){
+        saveStudents(studentLocalStorage);
+      }
+      else{
+        saveStudents(students)
+      }
+    }
+
+  },[]);
 
   const saveStudents = (students) => {
     setAllStudents(students);
     setSearchResults(students);
-  };
-
-
-  const handleRemoveStudent = (studentId) => {
-    const updatedStudents = allStudents.filter((student) => student.id !== studentId);
-    saveStudents(updatedStudents);
+    if(localStorage){
+      localStorage.setItem('students', JSON.stringify(students));
+      console.log('saved to local storage')
+    }
   };
 
   const addStudent = (newStudent) => {
@@ -35,168 +45,145 @@ function App() {
     saveStudents(updatedStudents);
   };
 
-  const [editmode, setEditMode] = useState(false);
+  const removeStudent = (studentToDelete) => {
+    const updatedStudentsArray = allStudents.filter(student => student.id !== studentToDelete.id);
+    saveStudents(updatedStudentsArray);
+  };
 
+  const updateStudent = (updatedStudent) => {
+    const updatedStudentsArray = allStudents.map(student => student.id === updateStudent.id ? {...student, ...updatedStudent} : student)
+    saveStudents(updatedStudentsArray);
+  };
 
   const searchStudents = () => {
     let keywordsArray = [];
+
     if (keywords) {
       keywordsArray = keywords.toLowerCase().split(' ');
     }
 
-    if (keywordsArray.length > 0) {
-      const results = allStudents.filter((student) => {
-        for (const word of keywordsArray) {
-          if (
-            student.firstName.toLowerCase().includes(word) ||
-            student.lastName.toLowerCase().includes(word) ||
-            student.gradYear.toString().includes(word)
-          ) {
+    if(Elixer){
+      keywordsArray.push(Elixer.toString());
+    }
+    console.log(keywordsArray);
+
+    if(keywordsArray.length > 0){
+      const searchResults = allStudents.filter(student => {
+        for(const word of keywordsArray){
+          if(student.Name.toLowerCase().includes(word) ||
+          student.Elixer === word){
             return true;
           }
         }
         return false;
       });
-      setSearchResults(results);
-    } else {
+      setSearchResults(searchResults);
+    } else{
       setSearchResults(allStudents);
     }
-  };
-  useEffect(() => {
-    searchStudents(); // Call searchStudents when keywords change
-  }, [keywords]);
+  }
+
+
 
   const students = [{
     id: nanoid(),
-    firstName: "Bernete",
-    lastName: "Beed",
-    email: "bbeed0@flickr.com",
-    images:'images/student1.jpg',
-    gradYear: '2003'
+    Name: "Barbarians",
+    DPS: "345",
+    HP: "5",
+    images:'images/Card1.png',
+    Elixer: '6'
   }, {
     id: nanoid(),
-    firstName: "Yolande",
-    lastName: "Schruur",
-    email: "yschruur1@boston.com",
-    images:'images/student2.jpg',
-    gradYear: '1995'
+    Name: "Yolande",
+    DPS: "Schruur",
+    HP: "yschruur1@boston.com",
+    images:'/images/Card2.png',
+    Elixer: '1995'
   }, {
     id: nanoid(),
-    firstName: "Ag",
-    lastName: "Gendricke",
-    email: "agendricke2@networkadvertising.org",
-    images:'images/student3.jpg',
-    gradYear: '456'
+    Name: "Ag",
+    DPS: "Gendricke",
+    HP: "agendricke2@networkadvertising.org",
+    images:'images/Card3.png',
+    Elixer: '456'
   }, {
     id: nanoid(),
-    firstName: "Robinia",
-    lastName: "Dagleas",
-    email: "rdagleas3@prweb.com",
-    images:'images/student4.jpg',
-    gradYear: '2003'
+    Name: "Robinia",
+    DPS: "Dagleas",
+    HP: "rdagleas3@prweb.com",
+    images:'images/Card4.png',
+    Elixer: '2003'
   }, {
     id: nanoid(),
-    firstName: "Rosa",
-    lastName: "Cathel",
-    email: "rcathel4@google.cn",
-    images:'images/student5.jpg',
-    gradYear: '6097'
+    Name: "Rosa",
+    DPS: "Cathel",
+    HP: "rcathel4@google.cn",
+    images:'images/Card5.png',
+    Elixer: '6097'
   }, {
     id: nanoid(),
-    firstName: "Brandtr",
-    lastName: "Manie",
-    email: "bmanie5@arizona.edu",
-    images:'images/student6.jpg',
-    gradYear: '2003'
+    Name: "Brandtr",
+    DPS: "Manie",
+    HP: "bmanie5@arizona.edu",
+    images:'images/Card6.png',
+    Elixer: '2003'
   }, {
     id: nanoid(),
-    firstName: "Nalani",
-    lastName: "Edge",
-    email: "nedge6@quantcast.com",
-    images:'images/student7.jpg',
-    gradYear: '2015'
+    Name: "Nalani",
+    DPS: "Edge",
+    HP: "nedge6@quantcast.com",
+    images:'images/Card1.png',
+    Elixer: '2015'
   }, {
     id: nanoid(),
-    firstName: "Mel",
-    lastName: "McCullouch",
-    email: "mmccullouch7@ucla.edu",
-    images:'images/student8.jpg',
-    gradYear: '2003'
+    Name: "Mel",
+    DPS: "McCullouch",
+    HP: "mmccullouch7@ucla.edu",
+    images:'images/Card1.png',
+    Elixer: '2003'
   }, {
     id: nanoid(),
-    firstName: "Danie",
-    lastName: "Bushill",
-    email: "dbushill8@house.gov",
-    images:'images/student9.jpg',
-    gradYear: '2003'
+    Name: "Danie",
+    DPS: "43",
+    HP: "505",
+    images:'images/Card1.png',
+    Elixer: '2003'
   }, {
     id: nanoid(),
-    firstName: "Evvy",
-    lastName: "Dowderswell",
-    email: "edowderswell9@skype.com",
-    images:'images/student10.jpg',
-    gradYear: '2003'
+    Name: "Evvy",
+    DPS: "Dowderswell",
+    HP: "edowderswell9@skype.com",
+    images:'images/Card1.png',
+    Elixer: '2003'
   }];
 
   return (
+    
     <div className="container">
-      <label htmlFor="txtKeywords"> <FontAwesomeIcon icon={faSearch}/> Search by first or last name or Year</label>
-      <input
-        type="text"
-        className="form-control"
-        placeholder="Search"
-        onChange={(evt) => setKeywords(evt.currentTarget.value)}
-        value={keywords}
-      />
-      <div className="row" id='allStudents'>
-        {searchResults &&
-          searchResults.map((student) => (
-            <div className="col-lg-2" key={student.id}>
-              <div className="card position-relative">
-                <button type="button" className="btn btn-danger btn-sm" onClick={() => handleRemoveStudent(student.id)}> <FontAwesomeIcon icon={faWarning}/> &nbsp; Remove </button>
-                  <>
-                    <img src={student.images} alt="Our Students" />
-                    {!editmode && <ul className="list-group list-group-flush">
-                      <li className="list-group-item text-center">{student.firstName}</li>
-                      <li className="list-group-item text-center">{student.lastName}</li>
-                      <li className="list-group-item text-center">{student.email}</li>
-                      <li className="list-group-item text-center">{student.gradYear}</li>
-                      <li className="list-group-item text-center">
-                      <button type='button' className='btn btn-warning' onClick={() => setEditMode(true)}>
-                          Edit <FontAwesomeIcon icon={faMagicWandSparkles}/>
-                      </button>
-                    </li>
-                    </ul>
-            }
-            {editmode &&
-              <ul className="list-group list-group-flush">
-              <li className="list-group-item text-center"><input type='text' className='form-control' value={firstName} onChange={(evt) => setFirstName(evt.currentTarget.value)} /></li>
-              <li className="list-group-item text-center"><input type='text' className='form-control' value={lastName} onChange={(evt) => setLastName(evt.currentTarget.value)} /></li>
-              <li className="list-group-item text-center"><input type='email' className='form-control' value={email} onChange={(evt) => setEmail(evt.currentTarget.value)} /></li>
-              <li className="list-group-item text-center"><input type='text' className='form-control' value={gradYear} onChange={(evt) => setGradYear(evt.currentTarget.value)} /></li>
-              <li className="list-group-item"> <button id='btnSave' className='btn btn-secondary'>Save </button></li>
-              </ul>
-            }
-                  </>
-              </div>
-            </div>
-          ))}
+            <div className='row mt-4 clash-royale-border' >
+          <h3> Search Cards</h3>
+          <div className='col-md-4'>
+            <input type='text' className='form-control' placeholder='Card Name' onChange={evt => setKeywords(evt.currentTarget.value)} value={keywords}/>
+          </div>
+          <div className='col-md-4 '>
+          <select value={Elixer} onChange={evt => setElixer(evt.currentTarget.value)} className='form-select'>
+              <option value=''> Select Elixer Cost</option>
+              {_(allStudents).map(student => student.Elixer).sort().uniq().map(Elixer => <option key={Elixer} value={Elixer}>{Elixer}</option>).value()}
+          </select>
+          </div>
+          <div className='col-md-4'>
+            <button type='button' className='btn btn-primary' onClick={searchStudents}>Search Cards &nbsp; <FontAwesomeIcon icon={faSearch} /></button>
+          </div>
+      </div> 
+      <div className='row clash-royale-border'>
+        <h3>Clash Royale Cards</h3>
+        {searchResults && searchResults.map((student) =>
+          ( <div className='col-lg-2' key={student.id}> 
+            <Student  student={student} removeStudent={removeStudent} updateStudent={updateStudent} />
+          </div>)
+        )}
       </div>
-      {!allStudents && (
-        <button
-          type="button"
-          className="btn btn-lg btn-success"
-          onClick={() => saveStudents(students)}
-        >
-          Save Students
-        </button>
-      )}
-      <AddStudent addStudent={addStudent} />
-      <div className="row mt-4">
-        <div className="col-md-4"></div>
-        <div className="col-md-4"></div>
-        <div className="col-md-4"></div>
-      </div>
+      <AddStudent addStudent={addStudent}/>
     </div>
   );
 }

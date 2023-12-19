@@ -1,7 +1,22 @@
-#addStudent, #searchStudent{
-    border-radius: 5%;
-    box-shadow: 5px 5px 5px 5px black;
-    border: thin solid black;
-    padding: 5em;
-    color: green;
-}
+
+:root {
+    --cr-primary: #9c6c49;
+    --cr-secondary: #2c3e50;
+    --cr-accent: #f39c12;
+  }
+  
+  .clash-royale-border {
+    border: 10px solid var(--cr-primary);
+    border-radius: 15px;
+    background-color: var(--cr-secondary);
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    position: relative;
+  }
+  
+  .clash-royale-card img {
+    max-width: 100%;
+    height: auto;
+    border-bottom: 2px solid #f7c56e; /* Clash Royale theme color */
+  }
+

@@ -1,35 +1,53 @@
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f8f9fa;
+    background: url('../public/images/bg.png') repeat;
     margin: 0;
     padding: 0;
   }
-  
-  .container {
-    margin-top: 20px;
-  }
-  
   .row {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
+    margin-bottom: 15px;
   }
 
-  #allStudents{
-    border-radius: 5%;
-    box-shadow: 5px 5px 5px 5px black;
-    border: thin solid black;
-    padding: 5em;
-    color: green;
-  }
   
   .card {
     position: relative;
     margin: 10px;
     padding: 10px;
-    background-color: #fff;
+    background-color: #bbb;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  :root {
+    --cr-primary: #9c6c49;
+    --cr-secondary: #2c3e50;
+    --cr-accent: #f39c12;
+  }
+  
+  /* Clash Royale-themed border */
+  .clash-royale-border {
+    border: 10px solid var(--cr-primary);
+    border-radius: 15px;
+    background-color: var(--cr-secondary);
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    position: relative;
+  }
+  
+  /* Clash Royale crown */
+  .clash-royale-crown {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-bottom: 30px solid var(--cr-accent);
   }
   
   .card img {
@@ -42,18 +60,3 @@ body {
     background-color: #f8f9fa;
   }
   
-  .btn-danger {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-  }
-  
-  /* Styles for the Save Students button */
-  .btn-success {
-    margin-bottom: 20px;
-  }
-  
-  /* Styles for the search bar */
-  .form-control {
-    margin-bottom: 10px;
-  }
